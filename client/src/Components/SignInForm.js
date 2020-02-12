@@ -28,9 +28,10 @@ class SignInForm extends React.Component {
     render() {
         return (
             <div>
+                <h3>Sign In</h3>
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" onChange={this.handleChange} name="email" placeholder="email" value={this.state.email} />
-                    <input type="text" onChange={this.handleChange} name="password" placeholder="password" value={this.state.password} />
+                    <input type="password" onChange={this.handleChange} name="password" placeholder="password" value={this.state.password} />
                     <input type="submit" />
                 </form>
                 or <a href="#">Sign Up</a>
