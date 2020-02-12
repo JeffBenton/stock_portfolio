@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import SignInForm from "./Components/SignInForm";
 import RegisterForm from "./Components/RegisterForm";
 import Portfolio from "./Components/Portfolio";
+import Transactions from "./Components/Transactions";
 
 function App() {
   return (
@@ -16,6 +17,10 @@ function App() {
 
                 <Route path="/portfolio">
                     <Portfolio />
+                </Route>
+
+                <Route path="/transactions">
+                    <Transactions />
                 </Route>
 
                 <Route path="/">
