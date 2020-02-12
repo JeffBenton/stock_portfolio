@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import SignInForm from "./Components/SignInForm";
-import RegisterForm from "./Components/RegisterForm"
+import RegisterForm from "./Components/RegisterForm";
+import Portfolio from "./Components/Portfolio";
 
 function App() {
   return (
@@ -11,6 +12,10 @@ function App() {
             <Switch>
                 <Route path="/signup">
                     <RegisterForm />
+                </Route>
+
+                <Route path="/portfolio">
+                    <Portfolio />
                 </Route>
 
                 <Route path="/">
