@@ -26,7 +26,11 @@ class SignInForm extends React.Component {
                 "email": this.state.email,
                 "password": this.state.password
             })
-        });
+        })
+            .then(res => res.json())
+            .then(responseJSON => {
+                console.log(responseJSON)
+            });
 
         this.setState({
             email: "",
