@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 
 class Portfolio extends React.Component {
     render() {
         return (
             <div>
                 <h3>Portfolio</h3>
-                <p>portfolio | transactions</p>
+                <p>portfolio | <Link to="/transactions">transactions</Link></p>
                 <h4>Total: $5000</h4>
 
                 <table>

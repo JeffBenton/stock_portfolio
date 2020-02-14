@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 class SignInForm extends React.Component {
 
@@ -35,7 +35,7 @@ class SignInForm extends React.Component {
                     <input type="password" onChange={this.handleChange} name="password" placeholder="password" value={this.state.password} />
                     <input type="submit" />
                 </form>
-                or <NavLink to="/signup">Sign Up</NavLink>
+                or <Link to="/signup">Sign Up</Link>
             </div>
         )
     }

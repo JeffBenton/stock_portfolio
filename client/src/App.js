@@ -6,6 +6,8 @@ import RegisterForm from "./Components/RegisterForm";
 import Portfolio from "./Components/Portfolio";
 import Transactions from "./Components/Transactions";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 function App() {
   return (
     <div className="App">
