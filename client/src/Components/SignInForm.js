@@ -17,8 +17,16 @@ class SignInForm extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
 
-        // TODO
-        // send post request to handle login attempt
+        fetch('/api/signin', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "email": this.state.email,
+                "password": this.state.password
+            })
+        });
 
         this.setState({
             email: "",

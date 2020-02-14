@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
   def signin
-    puts 'hello'
+    puts params
   end
 end
