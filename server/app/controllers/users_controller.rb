@@ -20,6 +20,6 @@ class UsersController < ApplicationController
 
   def get
     user = User.find_by(id: params[:id])
-    render json: { name: user[:name], stocks: user[:stocks]}
+    render json: { name: user[:name], stocks: user[:stocks], balance: user[:balance]}
   end
 end

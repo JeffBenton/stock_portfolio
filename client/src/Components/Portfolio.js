@@ -4,56 +4,64 @@ import { Link } from 'react-router-dom'
 class Portfolio extends React.Component {
 
     state = {
-        stocks: []
+        stocks: [],
+        name: "",
+        balance: 0
     };
 
     componentDidMount() {
         const id = window.sessionStorage.getItem("id");
-        console.log(id);
         fetch(`/api/user/${id}`)
             .then(res => res.json())
             .then(responseJSON => {
-                console.log(responseJSON);
+                this.setState({
+                    stocks: responseJSON["stocks"],
+                    name: responseJSON["name"],
+                    balance: responseJSON["balance"]
+                })
             })
     }
+
+    displayStocks = () => {
+        if(this.state.stocks) {
+            return (
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {this.state.stocks.map(stock => {
+                            return (
+                            <tr>
+                            <td>{stock["ticker"]}</td>
+                            <td>{stock["quantity"]}</td>
+                            <td>{stock["price"]}</td>
+                            <td>{stock["value"]}</td>
+                            </tr>
+                            )
+                        })}
+                    </tbody>
+                </table>
+            )
+        }
+        else {
+            return (<div>You currently own no stocks</div>)
+        }
+    };
 
     render() {
         return (
             <div>
+                <h2>Hi {this.state.name}</h2>
                 <h3>Portfolio</h3>
                 <p>portfolio | <Link to="/transactions">transactions</Link></p>
-                <h4>Total: $5000</h4>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Symbol</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>AAPL</td>
-                        <td>6</td>
-                        <td>$1,000</td>
-                        <td>$6,000</td>
-                    </tr>
-                    <tr>
-                        <td>TSLA</td>
-                        <td>10</td>
-                        <td>$700</td>
-                        <td>$7,000</td>
-                    </tr>
-                    <tr>
-                        <td>BYND</td>
-                        <td>20</td>
-                        <td>$100</td>
-                        <td>$2,000</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <h4>Balance: ${this.state.balance}</h4>
+                {this.displayStocks()}
 
                 <h3>Buy</h3>
                 <form>
