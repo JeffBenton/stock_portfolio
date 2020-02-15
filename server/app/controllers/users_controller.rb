@@ -1,17 +1,20 @@
 class UsersController < ApplicationController
   def signin
-    @user = User.find_by(email: params[:email])
-    # @user.authenticate(params[:password])
-    render status: 200, json: true
+    user = User.find_by(email: params[:email])
+    if user.authenticate(params[:password])
+      render json: true
+    else
+      render json: false
+    end
   end
 
   def register
     user = User.new(name: params[:name], email: params[:email], password: params[:password])
     if user.valid?
       user.save
-      render status: 200, json: true
+      render json: true
     else
-      render status: 401, json: false
+      render json: false
     end
   end
 end

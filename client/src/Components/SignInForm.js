@@ -1,11 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 class SignInForm extends React.Component {
 
     state = {
         email: "",
-        password: ""
+        password: "",
+        success: false
     };
 
     handleChange = e => {
@@ -29,7 +30,11 @@ class SignInForm extends React.Component {
         })
             .then(res => res.json())
             .then(responseJSON => {
-                console.log(responseJSON)
+                if(responseJSON) {
+                    this.setState({
+                        success: true
+                    })
+                }
             });
 
         this.setState({
@@ -39,6 +44,10 @@ class SignInForm extends React.Component {
     };
 
     render() {
+        if(this.state.success) {
+            return <Redirect to="/portfolio" />
+        }
+
         return (
             <div>
                 <h3>Sign In</h3>

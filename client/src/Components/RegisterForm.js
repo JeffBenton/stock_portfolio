@@ -1,12 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 class RegisterForm extends React.Component {
 
     state = {
         name: "",
         email: "",
-        password: ""
+        password: "",
+        success: false
     };
 
     handleChange = e => {
@@ -31,17 +32,19 @@ class RegisterForm extends React.Component {
         })
             .then(res => res.json())
             .then(responseJSON => {
-                console.log(responseJSON)
+                if(responseJSON) {
+                    this.setState({
+                        success: true
+                    });
+                }
             });
-
-        this.setState({
-            name: "",
-            email: "",
-            password: ""
-        });
     };
 
     render() {
+        if(this.state.success) {
+            return <Redirect to='/portfolio' />
+        }
+
         return (
             <div>
                 <h3>Sign Up</h3>
