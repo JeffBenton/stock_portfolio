@@ -2,6 +2,21 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 
 class Portfolio extends React.Component {
+
+    state = {
+        stocks: []
+    };
+
+    componentDidMount() {
+        const id = window.sessionStorage.getItem("id");
+        console.log(id);
+        fetch(`/api/user/${id}`)
+            .then(res => res.json())
+            .then(responseJSON => {
+                console.log(responseJSON);
+            })
+    }
+
     render() {
         return (
             <div>
