@@ -6,7 +6,9 @@ class Portfolio extends React.Component {
     state = {
         stocks: [],
         name: "",
-        balance: 0
+        balance: 0,
+        ticker: "",
+        quantity: ""
     };
 
     componentDidMount() {
@@ -17,7 +19,8 @@ class Portfolio extends React.Component {
                 this.setState({
                     stocks: responseJSON["stocks"],
                     name: responseJSON["name"],
-                    balance: responseJSON["balance"]
+                    balance: responseJSON["balance"],
+                    id: responseJSON["id"]
                 })
             })
     }
@@ -54,6 +57,30 @@ class Portfolio extends React.Component {
         }
     };
 
+    handleSubmit = e => {
+        e.preventDefault();
+        fetch('/api/buy', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "ticker": this.state.ticker,
+                "quantity": this.state.quantity
+            })
+        })
+            .then(res => res.json())
+            .then(responseJSON => {
+                console.log(responseJSON);
+            })
+    };
+
+    handleChange = e => {
+        this.setState({
+            [e.target.name]: e.target.value
+        });
+    };
+
     render() {
         return (
             <div>
@@ -64,9 +91,9 @@ class Portfolio extends React.Component {
                 {this.displayStocks()}
 
                 <h3>Buy</h3>
-                <form>
-                    <input type="text" placeholder="Ticker" />
-                    <input type="text" placeholder="Quantity" />
+                <form onSubmit={this.handleSubmit}>
+                    <input type="text" placeholder="Ticker" onChange={this.handleChange} name="ticker" value={this.state.ticker} />
+                    <input type="text" placeholder="Quantity" onChange={this.handleChange} name="quantity" value={this.state.quantity} />
                     <input type="submit" />
                 </form>
             </div>

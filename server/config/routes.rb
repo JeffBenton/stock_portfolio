@@ -4,5 +4,6 @@ Rails.application.routes.draw do
     get '/user/:id', to: 'users#get'
     post '/signin', to: 'users#signin'
     post '/register', to:'users#register'
+    post '/buy', to: 'stocks#buy'
   end
 end
