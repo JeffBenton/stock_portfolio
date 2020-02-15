@@ -6,7 +6,12 @@ class UsersController < ApplicationController
   end
 
   def register
-    puts params
-    render status: 200, json: true
+    user = User.new(name: params[:name], email: params[:email], password: params[:password])
+    if user.valid?
+      user.save
+      render status: 200, json: true
+    else
+      render status: 401, json: false
+    end
   end
 end
