@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   def signin
     user = User.find_by(email: params[:email])
     if user.authenticate(params[:password])
+      user.regenerate_auth_token
       render json: { id: user.id }
     else
       render json: false

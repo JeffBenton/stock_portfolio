@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_16_053814) do
+ActiveRecord::Schema.define(version: 2020_02_16_231356) do
 
   create_table "stocks", force: :cascade do |t|
     t.string "name"
@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 2020_02_16_053814) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.float "balance", default: 5000.0
+    t.string "auth_token"
   end
 
 end
