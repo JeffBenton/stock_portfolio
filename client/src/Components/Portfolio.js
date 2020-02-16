@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 class Portfolio extends React.Component {
 
     state = {
+        id: "",
         stocks: [],
         name: "",
         balance: 0,
@@ -13,6 +14,10 @@ class Portfolio extends React.Component {
 
     componentDidMount() {
         const id = window.sessionStorage.getItem("id");
+        this.fetchUser(id);
+    }
+
+    fetchUser = id => {
         fetch(`/api/user/${id}`)
             .then(res => res.json())
             .then(responseJSON => {
@@ -22,8 +27,8 @@ class Portfolio extends React.Component {
                     balance: responseJSON["balance"],
                     id: responseJSON["id"]
                 })
-            })
-    }
+            });
+    };
 
     displayStocks = () => {
         if(this.state.stocks) {
@@ -38,14 +43,14 @@ class Portfolio extends React.Component {
                     </tr>
                     </thead>
                     <tbody>
-                        {this.state.stocks.map(stock => {
+                        {Object.values(this.state.stocks).map(stock => {
                             return (
-                            <tr>
-                            <td>{stock["ticker"]}</td>
-                            <td>{stock["quantity"]}</td>
-                            <td>{stock["price"]}</td>
-                            <td>{stock["value"]}</td>
-                            </tr>
+                                <tr key={stock["ticker"]}>
+                                    <td>{stock["ticker"]}</td>
+                                    <td>{stock["quantity"]}</td>
+                                    {/*<td>{stock["price"]}</td>*/}
+                                    {/*<td>{stock["value"]}</td>*/}
+                                </tr>
                             )
                         })}
                     </tbody>
@@ -66,12 +71,13 @@ class Portfolio extends React.Component {
             },
             body: JSON.stringify({
                 "ticker": this.state.ticker,
-                "quantity": this.state.quantity
+                "quantity": this.state.quantity,
+                "id": this.state.id
             })
         })
             .then(res => res.json())
             .then(responseJSON => {
-                console.log(responseJSON);
+                this.fetchUser(this.state.id);
             })
     };
 

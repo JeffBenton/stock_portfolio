@@ -20,6 +20,24 @@ class UsersController < ApplicationController
 
   def get
     user = User.find_by(id: params[:id])
-    render json: { name: user[:name], stocks: user[:stocks], balance: user[:balance], id: user[:id]}
+    stocks = consolidateStocks(user[:id])
+    render json: { name: user[:name], stocks: stocks, balance: user[:balance], id: user[:id]}
+  end
+
+  private
+
+  def consolidateStocks(userId)
+    s = {}
+    Stock.where(user_id: userId).collect do |stock|
+      if s[stock[:ticker]]
+        s[stock[:ticker]][:quantity] += stock[:quantity]
+      else
+        s[stock[:ticker]] = {
+            ticker: stock[:ticker],
+            quantity: stock[:quantity]
+        }
+      end
+    end
+    s
   end
 end
