@@ -77,6 +77,10 @@ class Portfolio extends React.Component {
         })
             .then(res => res.json())
             .then(responseJSON => {
+                this.setState({
+                    ticker: "",
+                    quantity: ""
+                });
                 this.fetchUser(this.state.id);
             })
     };
