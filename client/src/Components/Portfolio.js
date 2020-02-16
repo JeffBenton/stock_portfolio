@@ -48,8 +48,8 @@ class Portfolio extends React.Component {
                                 <tr key={stock["ticker"]}>
                                     <td>{stock["ticker"]}</td>
                                     <td>{stock["quantity"]}</td>
-                                    {/*<td>{stock["price"]}</td>*/}
-                                    {/*<td>{stock["value"]}</td>*/}
+                                    <td>${stock["price"]}</td>
+                                    <td>${stock["value"].toFixed(2)}</td>
                                 </tr>
                             )
                         })}
