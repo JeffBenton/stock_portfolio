@@ -1,6 +1,12 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom'
 
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col"
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
+
 class RegisterForm extends React.Component {
 
     state = {
@@ -63,17 +69,27 @@ class RegisterForm extends React.Component {
         }
 
         return (
-            <div>
-                <h3>Sign Up</h3>
-                {this.displayErrors()}
-                <form onSubmit={this.handleSubmit}>
-                    <input type="text" onChange={this.handleChange} name="name" placeholder="name" value={this.state.name} />
-                    <input type="text" onChange={this.handleChange} name="email" placeholder="email" value={this.state.email} />
-                    <input type="password" onChange={this.handleChange} name="password" placeholder="password" value={this.state.password} />
-                    <input type="submit" />
-                </form>
-                or <Link to="/">Sign In</Link>
-            </div>
+            <Container>
+                <Row className="justify-content-md-center"> <h3>Sign Up</h3></Row>
+                <Row className="justify-content-md-center">{this.displayErrors()}</Row>
+                <Row className="justify-content-md-center">
+                    <Form onSubmit={this.handleSubmit}>
+                        <Col><Form.Group>
+                            <Form.Control type="text" placeholder="name" name="name" value={this.state.name} onChange={this.handleChange}/>
+                        </Form.Group></Col>
+                        <Col><Form.Group>
+                            <Form.Control type="email" placeholder="email" name="email" value={this.state.email} onChange={this.handleChange}/>
+                        </Form.Group></Col>
+                        <Col><Form.Group>
+                            <Form.Control type="password" placeholder="password" name="password" value={this.state.password} onChange={this.handleChange}/>
+                        </Form.Group></Col>
+                        <Col><Button variant="primary" type="submit">
+                            Sign Up
+                        </Button></Col>
+                    </Form>
+                </Row>
+                <Row className="justify-content-md-center"><div>or <Link to="/">Sign In</Link></div></Row>
+            </Container>
         )
     }
 }

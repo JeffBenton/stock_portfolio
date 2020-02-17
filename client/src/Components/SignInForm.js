@@ -1,6 +1,12 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom'
 
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col"
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
+
 class SignInForm extends React.Component {
 
     state = {
@@ -53,16 +59,26 @@ class SignInForm extends React.Component {
         }
 
         return (
-            <div>
-                <h3>Sign In</h3>
-                <p>{this.state.error}</p>
-                <form onSubmit={this.handleSubmit}>
-                    <input type="text" onChange={this.handleChange} name="email" placeholder="email" value={this.state.email} />
-                    <input type="password" onChange={this.handleChange} name="password" placeholder="password" value={this.state.password} />
-                    <input type="submit" />
-                </form>
-                or <Link to="/signup">Sign Up</Link>
-            </div>
+            <Container>
+                <Row className="justify-content-md-center"><h3>Sign In</h3></Row>
+                <Row className="justify-content-md-center"><p>{this.state.error}</p></Row>
+                <Row className="justify-content-md-center">
+                    <Form onSubmit={this.handleSubmit}>
+                        <Col><Form.Group>
+                            <Form.Control type="email" placeholder="email" name="email" value={this.state.email} onChange={this.handleChange}/>
+                        </Form.Group></Col>
+                        <Col><Form.Group>
+                            <Form.Control type="password" placeholder="password" name="password" value={this.state.password} onChange={this.handleChange}/>
+                        </Form.Group></Col>
+                        <Col><Button variant="primary" type="submit">
+                            Log In
+                        </Button></Col>
+                    </Form>
+                </Row>
+                <Row className="justify-content-md-center">
+                    <div>or <Link to="/signup">Sign Up</Link></div>
+                </Row>
+            </Container>
         )
     }
 }
