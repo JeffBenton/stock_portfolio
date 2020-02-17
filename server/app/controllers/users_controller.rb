@@ -13,10 +13,10 @@ class UsersController < ApplicationController
 
   def register
     user = User.create(name: params[:name], email: params[:email], password: params[:password])
-    if user.errors
+    if !user.errors.empty?
       render json: { success: false, errors: user.errors.messages }
     else
-      render json: { success: true, id: user.id }
+      render json: { success: true, id: user.id, auth_token: user.auth_token }
     end
   end
 

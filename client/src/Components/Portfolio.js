@@ -5,12 +5,13 @@ class Portfolio extends React.Component {
 
     state = {
         id: "",
-        stocks: [],
+        stocks: {},
         name: "",
         balance: 0,
         ticker: "",
         quantity: "",
-        logout: false
+        logout: false,
+        error: ""
     };
 
     componentDidMount() {
@@ -53,7 +54,7 @@ class Portfolio extends React.Component {
     };
 
     displayStocks = () => {
-        if(this.state.stocks) {
+        if(Object.entries(this.state.stocks).length > 0) {
             return (
                 <table>
                     <thead>
@@ -100,11 +101,19 @@ class Portfolio extends React.Component {
         })
             .then(res => res.json())
             .then(responseJSON => {
-                this.setState({
-                    ticker: "",
-                    quantity: ""
-                });
-                this.fetchStocks(this.state.id);
+                if(responseJSON["success"]) {
+                    this.setState({
+                        ticker: "",
+                        quantity: "",
+                        balance: responseJSON["newBalance"]
+                    });
+                    this.fetchStocks(this.state.id);
+                }
+                else {
+                    this.setState({
+                        error: responseJSON["error"]
+                    })
+                }
             });
     };
 
@@ -131,10 +140,11 @@ class Portfolio extends React.Component {
                 <h2>Hi {this.state.name}</h2>
                 <h3>Portfolio</h3>
                 <p>portfolio | <Link to="/transactions">transactions</Link> | <Link to="#" onClick={this.handleLogout}>logout</Link></p>
-                <h4>Balance: ${this.state.balance}</h4>
+                <h4>Balance: ${this.state.balance.toFixed(2)}</h4>
                 {this.displayStocks()}
 
                 <h3>Buy</h3>
+                <p>{this.state.error}</p>
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" placeholder="Ticker" onChange={this.handleChange} name="ticker" value={this.state.ticker} />
                     <input type="text" placeholder="Quantity" onChange={this.handleChange} name="quantity" value={this.state.quantity} />

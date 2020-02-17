@@ -3,10 +3,32 @@ require 'json'
 class StocksController < ApplicationController
   def buy
     user = authenticate(params[:id], request.headers["HTTP_AUTH_TOKEN"])
-    res = HTTP.get("https://cloud.iexapis.com/stable/stock/#{params["ticker"]}/quote?token=#{ENV['IEX_KEY']}").to_s
-    data = JSON.parse(res)
-    Stock.create(name: data["companyName"], ticker: data["symbol"], price: data["latestPrice"], quantity: params["quantity"], user_id: user[:id])
-    render json: { symbol: data["symbol"], open: data["open"], latestPrice: data["latestPrice"]}
+    if user
+      unless params[:quantity].is_a? Integer || params[:quantity] < 1
+        render json: { success: false, error: "Quantity must be a positive integer"}
+        return
+      end
+
+      res = HTTP.get("https://cloud.iexapis.com/stable/stock/#{params["ticker"]}/quote?token=#{ENV['IEX_KEY']}").to_s
+      if res === "Unknown symbol" || res === "Not Found"
+        render json: { success: false, error: res}
+        return
+      end
+      data = JSON.parse(res)
+
+      if user[:balance] < data["latestPrice"] * params["quantity"].to_i
+        render json: { success: false, error: "Insufficient balance" }
+      else
+        Stock.create(name: data["companyName"], ticker: data["symbol"], price: data["latestPrice"], quantity: params["quantity"], user_id: user[:id])
+        user[:balance] -= (data["latestPrice"] * params[:quantity].to_i)
+        user.save
+
+        render json: { success: true, symbol: data["symbol"], open: data["open"], latestPrice: data["latestPrice"], newBalance: user[:balance] }
+      end
+    else
+      render json: { success: false }
+    end
+
   end
 
   def transactions
@@ -17,13 +39,17 @@ class StocksController < ApplicationController
     else
       render json: { success: false }
     end
-
   end
 
   def get
     user = authenticate(params[:id], request.headers["HTTP_AUTH_TOKEN"])
-    stocks = consolidateStocks(user[:id])
-    render json: { stocks: stocks}
+    if user
+      stocks = consolidateStocks(user[:id])
+      render json: { success: true, stocks: stocks}
+    else
+      render json: { success: false }
+    end
+
   end
 
   private
