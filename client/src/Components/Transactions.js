@@ -1,61 +1,20 @@
-import React from "react";
-import {Link, Redirect} from 'react-router-dom'
+import React from 'react';
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
-class Transactions extends React.Component {
+const Transactions = props => {
+    return (
+        <>
+            <Col md={4}><h3>Transactions</h3></Col>
 
-    state = {
-        transactions: [],
-        logout: false
-    };
-
-    componentDidMount() {
-        const user_id = window.sessionStorage.getItem("id");
-        const auth_token = window.sessionStorage.getItem("auth_token");
-        fetch(`/api/transactions/${user_id}`, {
-            headers: {
-                "AUTH_TOKEN": auth_token
-            }
-        })
-            .then(res => res.json())
-            .then(responseJSON => {
-                if(responseJSON["success"]) {
-                    this.setState({
-                        transactions: responseJSON["transactions"]
-                    })
-                }
-                else {
-                    this.handleLogout();
-                }
-            })
-    }
-
-    handleLogout = () => {
-        window.sessionStorage.clear();
-        this.setState({
-            logout: true
-        });
-    };
-
-    render() {
-        if(this.state.logout) {
-            return (<Redirect to="/" />)
-        }
-
-
-        return (
-            <div>
-                <h3>Transactions</h3>
-                <p><Link to="/portfolio">portfolio</Link> | transactions | <Link to="#" onClick={this.handleLogout}>logout</Link></p>
-
-                {this.state.transactions.map(t => {
-                    let plural = t.quantity > 1 ? "s" : "";
-                    return (
-                        <p key={t.id}>BUY ({t.ticker}) - {t.quantity} share{plural} @ ${t.price}</p>
-                    )
-                })}
-            </div>
-        )
-    }
-}
+            {props.transactions.map(t => {
+                let plural = t.quantity > 1 ? "s" : "";
+                return (
+                    <Row key={t.id}><p>BUY ({t.ticker}) - {t.quantity} share{plural} @ ${t.price}</p></Row>
+                )
+            })}
+        </>
+    )
+};
 
 export default Transactions;

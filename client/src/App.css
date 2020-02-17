@@ -1,0 +1,8 @@
+.not-active {
+    color: blue;
+    cursor: pointer;
+}
+
+.not-active:hover {
+    text-decoration: underline;
+}
