@@ -58,7 +58,7 @@ class RegisterForm extends React.Component {
     displayErrors = () => {
         return (
             Object.keys(this.state.errors).map(key => {
-                return (<Row className="justify-content-md-center"key={key}>{key} {this.state.errors[key]}</Row>)
+                return (<Row style={{ color: "red" }} className="justify-content-md-center" key={key}>{key} {this.state.errors[key]}</Row>)
             })
         );
     };
