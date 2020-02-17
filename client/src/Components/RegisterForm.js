@@ -7,7 +7,8 @@ class RegisterForm extends React.Component {
         name: "",
         email: "",
         password: "",
-        success: false
+        success: false,
+        errors: {}
     };
 
     handleChange = e => {
@@ -32,12 +33,27 @@ class RegisterForm extends React.Component {
         })
             .then(res => res.json())
             .then(responseJSON => {
-                if(responseJSON) {
+                if(responseJSON["success"]) {
+                    window.sessionStorage.setItem("id", responseJSON["id"]);
                     this.setState({
                         success: true
                     });
                 }
+                else {
+                    console.log(responseJSON["errors"]);
+                    this.setState({
+                        errors: responseJSON["errors"]
+                    })
+                }
             });
+    };
+
+    displayErrors = () => {
+        return (
+            Object.keys(this.state.errors).map(key => {
+                return (<p key={key}>{key} {this.state.errors[key]}</p>)
+            })
+        );
     };
 
     render() {
@@ -48,6 +64,7 @@ class RegisterForm extends React.Component {
         return (
             <div>
                 <h3>Sign Up</h3>
+                {this.displayErrors()}
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" onChange={this.handleChange} name="name" placeholder="name" value={this.state.name} />
                     <input type="text" onChange={this.handleChange} name="email" placeholder="email" value={this.state.email} />

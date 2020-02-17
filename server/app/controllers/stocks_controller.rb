@@ -25,7 +25,7 @@ class StocksController < ApplicationController
 
   def consolidateStocks(userId)
     s = {}
-    Stock.where(user_id: userId).collect do |stock|
+    Stock.where(user_id: userId).each do |stock|
       if s[stock[:ticker]]
         s[stock[:ticker]][:quantity] += stock[:quantity]
         s[stock[:ticker]][:value] += stock[:quantity] * s[stock[:ticker]][:price]

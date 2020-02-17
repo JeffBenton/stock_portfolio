@@ -12,12 +12,11 @@ class UsersController < ApplicationController
   end
 
   def register
-    user = User.new(name: params[:name], email: params[:email], password: params[:password])
-    if user.valid?
-      user.save
-      render json: { id: user.id }
+    user = User.create(name: params[:name], email: params[:email], password: params[:password])
+    if user.errors
+      render json: { success: false, errors: user.errors.messages }
     else
-      render json: false
+      render json: { success: true, id: user.id }
     end
   end
 
