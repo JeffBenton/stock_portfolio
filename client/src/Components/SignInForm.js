@@ -6,7 +6,8 @@ class SignInForm extends React.Component {
     state = {
         email: "",
         password: "",
-        success: false
+        success: false,
+        error: ""
     };
 
     handleChange = e => {
@@ -30,19 +31,20 @@ class SignInForm extends React.Component {
         })
             .then(res => res.json())
             .then(responseJSON => {
-                if(responseJSON) {
+                if(responseJSON["success"]) {
                     window.sessionStorage.setItem("id", responseJSON["id"]);
                     window.sessionStorage.setItem("auth_token", responseJSON["auth_token"]);
                     this.setState({
                         success: true
                     })
                 }
+                else {
+                    this.setState({
+                        password: "",
+                        error: responseJSON["error"]
+                    })
+                }
             });
-
-        this.setState({
-            email: "",
-            password: ""
-        })
     };
 
     render() {
@@ -53,6 +55,7 @@ class SignInForm extends React.Component {
         return (
             <div>
                 <h3>Sign In</h3>
+                <p>{this.state.error}</p>
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" onChange={this.handleChange} name="email" placeholder="email" value={this.state.email} />
                     <input type="password" onChange={this.handleChange} name="password" placeholder="password" value={this.state.password} />

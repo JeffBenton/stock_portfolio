@@ -3,11 +3,11 @@ require 'json'
 class UsersController < ApplicationController
   def signin
     user = User.find_by(email: params[:email])
-    if user.authenticate(params[:password])
+    if user and user.authenticate(params[:password])
       user.regenerate_auth_token
-      render json: { id: user.id, auth_token: user.auth_token }
+      render json: { success: true, id: user.id, auth_token: user.auth_token }
     else
-      render json: false
+      render json: { success: false, error: "Email or password is incorrect" }
     end
   end
 

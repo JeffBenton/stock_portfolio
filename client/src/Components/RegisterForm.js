@@ -40,9 +40,9 @@ class RegisterForm extends React.Component {
                     });
                 }
                 else {
-                    console.log(responseJSON["errors"]);
                     this.setState({
-                        errors: responseJSON["errors"]
+                        errors: responseJSON["errors"],
+                        password: ""
                     })
                 }
             });
