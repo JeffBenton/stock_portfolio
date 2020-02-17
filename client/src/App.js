@@ -7,6 +7,7 @@ import Portfolio from "./Components/Portfolio";
 import Transactions from "./Components/Transactions";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "./App.css"
 
 function App() {
   return (

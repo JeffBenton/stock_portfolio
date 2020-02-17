@@ -1,10 +1,11 @@
 import React from "react";
-import { Link } from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 
 class Transactions extends React.Component {
 
     state = {
-        transactions: []
+        transactions: [],
+        logout: false
     };
 
     componentDidMount() {
@@ -17,18 +18,29 @@ class Transactions extends React.Component {
         })
             .then(res => res.json())
             .then(responseJSON => {
-                console.log(responseJSON);
                 this.setState({
                     transactions: responseJSON
                 })
             })
     }
 
+    handleLogout = () => {
+        window.sessionStorage.clear();
+        this.setState({
+            logout: true
+        });
+    };
+
     render() {
+        if(this.state.logout) {
+            return (<Redirect to="/" />)
+        }
+
+
         return (
             <div>
                 <h3>Transactions</h3>
-                <p><Link to="/portfolio">portfolio</Link> | transactions</p>
+                <p><Link to="/portfolio">portfolio</Link> | transactions | <Link to="#" onClick={this.handleLogout}>logout</Link></p>
 
                 {this.state.transactions.map(t => {
                     return (

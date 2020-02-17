@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 class Portfolio extends React.Component {
 
@@ -9,7 +9,8 @@ class Portfolio extends React.Component {
         name: "",
         balance: 0,
         ticker: "",
-        quantity: ""
+        quantity: "",
+        logout: false
     };
 
     componentDidMount() {
@@ -107,12 +108,23 @@ class Portfolio extends React.Component {
         });
     };
 
+    handleLogout = () => {
+        window.sessionStorage.clear();
+        this.setState({
+            logout: true
+        });
+    };
+
     render() {
+        if(this.state.logout) {
+            return (<Redirect to="/" />)
+        }
+
         return (
             <div>
                 <h2>Hi {this.state.name}</h2>
                 <h3>Portfolio</h3>
-                <p>portfolio | <Link to="/transactions">transactions</Link></p>
+                <p>portfolio | <Link to="/transactions">transactions</Link> | <Link to="#" onClick={this.handleLogout}>logout</Link></p>
                 <h4>Balance: ${this.state.balance}</h4>
                 {this.displayStocks()}
 
