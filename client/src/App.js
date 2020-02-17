@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 
 import SignInForm from "./Components/SignInForm";
 import RegisterForm from "./Components/RegisterForm";
-import Portfolio from "./Components/Portfolio";
-import Transactions from "./Components/Transactions";
+import ViewContainer from "./Containers/ViewContainer";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -15,8 +14,7 @@ function App() {
             <Switch>
                 <Route exact path="/" component={SignInForm} />
                 <Route path="/signup" component={RegisterForm} />
-                <Route path="/portfolio" component={Portfolio} />
-                <Route path="/transactions" component={Transactions} />
+                <Route path="/profile" component={ViewContainer} />
 
                 <Redirect to="/" />
             </Switch>

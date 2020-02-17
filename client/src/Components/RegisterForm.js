@@ -65,7 +65,7 @@ class RegisterForm extends React.Component {
 
     render() {
         if(this.state.success) {
-            return <Redirect to='/portfolio' />
+            return <Redirect to='/profile' />
         }
 
         return (
