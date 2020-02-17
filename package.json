@@ -7,7 +7,7 @@
   "author": "Jeff Benton <jeff@frogrock.net>",
   "license": "MIT",
   "scripts": {
-    "build": "cd client && yarn install && yarn build && cd ../../../.rvm/gems/ruby-2.6.1/gems/activestorage-6.0.2.1/app/assets",
+    "build": "cd client && yarn install && yarn build && cd ..",
     "deploy": "cp -a client/build/. server/public",
     "postinstall": "yarn build && yarn deploy && echo 'Client built!'"
   },
