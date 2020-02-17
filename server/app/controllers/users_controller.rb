@@ -5,7 +5,7 @@ class UsersController < ApplicationController
     user = User.find_by(email: params[:email])
     if user.authenticate(params[:password])
       user.regenerate_auth_token
-      render json: { id: user.id }
+      render json: { id: user.id, auth_token: user.auth_token }
     else
       render json: false
     end
@@ -22,29 +22,7 @@ class UsersController < ApplicationController
   end
 
   def get
-    user = User.find_by(id: params[:id])
-    stocks = consolidateStocks(user[:id])
-    render json: { name: user[:name], stocks: stocks, balance: user[:balance], id: user[:id]}
-  end
-
-  private
-
-  def consolidateStocks(userId)
-    s = {}
-    Stock.where(user_id: userId).collect do |stock|
-      if s[stock[:ticker]]
-        s[stock[:ticker]][:quantity] += stock[:quantity]
-        s[stock[:ticker]][:value] += stock[:quantity] * s[stock[:ticker]][:price]
-      else
-        stockInfo = JSON.parse(HTTP.get("https://cloud.iexapis.com/stable/stock/#{stock[:ticker]}/quote?token=#{ENV['IEX_KEY']}").to_s)
-        s[stock[:ticker]] = {
-            ticker: stock[:ticker],
-            quantity: stock[:quantity],
-            price: stockInfo["latestPrice"],
-            value: stock[:quantity] * stockInfo["latestPrice"]
-        }
-      end
-    end
-    s
+    user = authenticate(params[:id], request.headers["HTTP_AUTH_TOKEN"])
+    render json: { name: user[:name], balance: user[:balance], id: user[:id] }
   end
 end

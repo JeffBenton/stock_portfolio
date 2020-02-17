@@ -32,6 +32,7 @@ class SignInForm extends React.Component {
             .then(responseJSON => {
                 if(responseJSON) {
                     window.sessionStorage.setItem("id", responseJSON["id"]);
+                    window.sessionStorage.setItem("auth_token", responseJSON["auth_token"]);
                     this.setState({
                         success: true
                     })

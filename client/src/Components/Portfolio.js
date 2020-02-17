@@ -14,19 +14,34 @@ class Portfolio extends React.Component {
 
     componentDidMount() {
         const id = window.sessionStorage.getItem("id");
-        this.fetchUser(id);
-    }
-
-    fetchUser = id => {
-        fetch(`/api/user/${id}`)
+        const auth_token = window.sessionStorage.getItem("auth_token");
+        fetch(`/api/users/${id}`, {
+            headers: {
+                "AUTH_TOKEN": auth_token
+            }
+        })
             .then(res => res.json())
             .then(responseJSON => {
                 this.setState({
-                    stocks: responseJSON["stocks"],
                     name: responseJSON["name"],
                     balance: responseJSON["balance"],
                     id: responseJSON["id"]
-                })
+                });
+            });
+        this.fetchStocks(id);
+    }
+
+    fetchStocks = id => {
+        fetch(`/api/stocks/${id}`, {
+            headers: {
+                "AUTH_TOKEN": window.sessionStorage.getItem("auth_token")
+            }
+        })
+            .then(res => res.json())
+            .then(responseJSON => {
+                this.setState({
+                    stocks: responseJSON["stocks"]
+                });
             });
     };
 
@@ -81,8 +96,8 @@ class Portfolio extends React.Component {
                     ticker: "",
                     quantity: ""
                 });
-                this.fetchUser(this.state.id);
-            })
+                this.fetchStocks(this.state.id);
+            });
     };
 
     handleChange = e => {
