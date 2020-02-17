@@ -48,8 +48,9 @@ class Transactions extends React.Component {
                 <p><Link to="/portfolio">portfolio</Link> | transactions | <Link to="#" onClick={this.handleLogout}>logout</Link></p>
 
                 {this.state.transactions.map(t => {
+                    let plural = t.quantity > 1 ? "s" : "";
                     return (
-                        <p key={t.id}>BUY ({t.ticker}) - {t.quantity} shares @ ${t.price}</p>
+                        <p key={t.id}>BUY ({t.ticker}) - {t.quantity} share{plural} @ ${t.price}</p>
                     )
                 })}
             </div>

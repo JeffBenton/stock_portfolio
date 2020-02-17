@@ -5,13 +5,13 @@ class Portfolio extends React.Component {
 
     state = {
         id: "",
-        stocks: {},
+        stocks: "",
         name: "",
         balance: 0,
         ticker: "",
         quantity: "",
         logout: false,
-        error: ""
+        error: "",
     };
 
     componentDidMount() {
@@ -54,7 +54,10 @@ class Portfolio extends React.Component {
     };
 
     displayStocks = () => {
-        if(Object.entries(this.state.stocks).length > 0) {
+        if(this.state.stocks === "") {
+            return ( <p>Loading...</p>)
+        }
+        else if(Object.entries(this.state.stocks).length > 0) {
             return (
                 <table>
                     <thead>
@@ -71,7 +74,7 @@ class Portfolio extends React.Component {
                                 <tr key={stock["ticker"]}>
                                     <td>{stock["ticker"]}</td>
                                     <td>{stock["quantity"]}</td>
-                                    <td>${stock["price"]}</td>
+                                    {this.stockPrice(stock["open"], stock["price"])}
                                     <td>${stock["value"].toFixed(2)}</td>
                                 </tr>
                             )
@@ -83,6 +86,19 @@ class Portfolio extends React.Component {
         else {
             return (<div>You currently own no stocks</div>)
         }
+    };
+
+    stockPrice = (open, price) => {
+        let color = "grey";
+        if(price > open) {
+            color = "green"
+        }
+        else if(price < open) {
+            color = "red"
+        }
+        return (
+            <td style={{ color: color }}>${price}</td>
+        )
     };
 
     handleSubmit = e => {
@@ -111,7 +127,9 @@ class Portfolio extends React.Component {
                 }
                 else {
                     this.setState({
-                        error: responseJSON["error"]
+                        error: responseJSON["error"],
+                        ticker: "",
+                        quantity: ""
                     })
                 }
             });
@@ -130,6 +148,18 @@ class Portfolio extends React.Component {
         });
     };
 
+    totalValue = () => {
+        let total = 0;
+        if(Object.entries(this.state.stocks).length > 0) {
+            Object.values(this.state.stocks).forEach(stock => {
+                total += stock["price"] * stock["quantity"]
+            });
+        }
+        return (
+            <span>(${total.toFixed(2)})</span>
+        )
+    };
+
     render() {
         if(this.state.logout) {
             return (<Redirect to="/" />)
@@ -138,12 +168,13 @@ class Portfolio extends React.Component {
         return (
             <div>
                 <h2>Hi {this.state.name}</h2>
-                <h3>Portfolio</h3>
+                <h3>Portfolio {this.totalValue()}</h3>
                 <p>portfolio | <Link to="/transactions">transactions</Link> | <Link to="#" onClick={this.handleLogout}>logout</Link></p>
-                <h4>Balance: ${this.state.balance.toFixed(2)}</h4>
+
                 {this.displayStocks()}
 
                 <h3>Buy</h3>
+                <h4>Balance: ${this.state.balance.toFixed(2)}</h4>
                 <p>{this.state.error}</p>
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" placeholder="Ticker" onChange={this.handleChange} name="ticker" value={this.state.ticker} />

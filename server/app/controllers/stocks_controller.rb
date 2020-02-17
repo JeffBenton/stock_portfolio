@@ -4,7 +4,9 @@ class StocksController < ApplicationController
   def buy
     user = authenticate(params[:id], request.headers["HTTP_AUTH_TOKEN"])
     if user
-      unless params[:quantity].is_a? Integer || params[:quantity] < 1
+      begin
+        Integer(params[:quantity])
+      rescue ArgumentError
         render json: { success: false, error: "Quantity must be a positive integer"}
         return
       end
@@ -23,7 +25,7 @@ class StocksController < ApplicationController
         user[:balance] -= (data["latestPrice"] * params[:quantity].to_i)
         user.save
 
-        render json: { success: true, symbol: data["symbol"], open: data["open"], latestPrice: data["latestPrice"], newBalance: user[:balance] }
+        render json: { success: true, newBalance: user[:balance] }
       end
     else
       render json: { success: false }
@@ -66,7 +68,8 @@ class StocksController < ApplicationController
             ticker: stock[:ticker],
             quantity: stock[:quantity],
             price: stockInfo["latestPrice"],
-            value: stock[:quantity] * stockInfo["latestPrice"]
+            value: stock[:quantity] * stockInfo["latestPrice"],
+            open: stockInfo["open"]
         }
       end
     end
