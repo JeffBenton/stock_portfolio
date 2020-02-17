@@ -16,6 +16,7 @@ class Portfolio extends React.Component {
     componentDidMount() {
         const id = window.sessionStorage.getItem("id");
         const auth_token = window.sessionStorage.getItem("auth_token");
+
         fetch(`/api/users/${id}`, {
             headers: {
                 "AUTH_TOKEN": auth_token
@@ -23,13 +24,18 @@ class Portfolio extends React.Component {
         })
             .then(res => res.json())
             .then(responseJSON => {
-                this.setState({
-                    name: responseJSON["name"],
-                    balance: responseJSON["balance"],
-                    id: responseJSON["id"]
-                });
+                if(responseJSON["success"]) {
+                    this.setState({
+                        name: responseJSON["name"],
+                        balance: responseJSON["balance"],
+                        id: responseJSON["id"]
+                    });
+                    this.fetchStocks(id);
+                }
+                else {
+                    this.handleLogout();
+                }
             });
-        this.fetchStocks(id);
     }
 
     fetchStocks = id => {

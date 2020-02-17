@@ -18,9 +18,14 @@ class Transactions extends React.Component {
         })
             .then(res => res.json())
             .then(responseJSON => {
-                this.setState({
-                    transactions: responseJSON
-                })
+                if(responseJSON["success"]) {
+                    this.setState({
+                        transactions: responseJSON["transactions"]
+                    })
+                }
+                else {
+                    this.handleLogout();
+                }
             })
     }
 

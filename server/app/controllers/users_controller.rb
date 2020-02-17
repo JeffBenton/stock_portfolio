@@ -23,9 +23,9 @@ class UsersController < ApplicationController
   def get
     user = authenticate(params[:id], request.headers["HTTP_AUTH_TOKEN"])
     if user
-      render json: { name: user[:name], balance: user[:balance], id: user[:id] }
+      render json: { success: true, name: user[:name], balance: user[:balance], id: user[:id] }
     else
-      render json: false
+      render json: { success: false }
     end
   end
 end

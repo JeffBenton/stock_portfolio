@@ -11,8 +11,13 @@ class StocksController < ApplicationController
 
   def transactions
     user = authenticate(params[:user_id], request.headers["HTTP_AUTH_TOKEN"])
-    transactions = Stock.where(user_id: user.id).order("created_at DESC")
-    render json: transactions
+    if user
+      transactions = Stock.where(user_id: user.id).order("created_at DESC")
+      render json: { success: true, transactions: transactions }
+    else
+      render json: { success: false }
+    end
+
   end
 
   def get
