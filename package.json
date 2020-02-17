@@ -2,8 +2,8 @@
   "name": "stock-tracker",
   "version": "1.0.0",
   "description": "a tracker of stocks",
-  "main": "index.js",
-  "repository": "https://github.com/JeffBenton/stock_portfolio/tree/deployment",
+  "main": "./client/src/index.js",
+  "repository": "https://github.com/JeffBenton/stock_portfolio/",
   "author": "Jeff Benton <jeff@frogrock.net>",
   "license": "MIT",
   "scripts": {
