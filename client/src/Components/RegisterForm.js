@@ -58,7 +58,7 @@ class RegisterForm extends React.Component {
     displayErrors = () => {
         return (
             Object.keys(this.state.errors).map(key => {
-                return (<p key={key}>{key} {this.state.errors[key]}</p>)
+                return (<Row className="justify-content-md-center"key={key}>{key} {this.state.errors[key]}</Row>)
             })
         );
     };
@@ -71,7 +71,7 @@ class RegisterForm extends React.Component {
         return (
             <Container>
                 <Row className="justify-content-md-center"> <h3>Sign Up</h3></Row>
-                <Row className="justify-content-md-center">{this.displayErrors()}</Row>
+                {this.displayErrors()}
                 <Row className="justify-content-md-center">
                     <Form onSubmit={this.handleSubmit}>
                         <Col><Form.Group>

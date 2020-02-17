@@ -1,6 +1,11 @@
 import React from "react";
 import {Link, Redirect} from 'react-router-dom'
 
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
+
 class Transactions extends React.Component {
 
     state = {
@@ -41,19 +46,20 @@ class Transactions extends React.Component {
             return (<Redirect to="/" />)
         }
 
-
         return (
-            <div>
-                <h3>Transactions</h3>
-                <p><Link to="/portfolio">portfolio</Link> | transactions | <Link to="#" onClick={this.handleLogout}>logout</Link></p>
+            <Container>
+                <Row>
+                    <Col md={4}><h3>Transactions</h3></Col>
+                    <Col md={{ span: 4, offset: 4 }}><p><Link to="/portfolio">portfolio</Link> | transactions | <Link to="#" onClick={this.handleLogout}>logout</Link></p></Col>
+                </Row>
 
                 {this.state.transactions.map(t => {
                     let plural = t.quantity > 1 ? "s" : "";
                     return (
-                        <p key={t.id}>BUY ({t.ticker}) - {t.quantity} share{plural} @ ${t.price}</p>
+                        <Row key={t.id}><p>BUY ({t.ticker}) - {t.quantity} share{plural} @ ${t.price}</p></Row>
                     )
                 })}
-            </div>
+            </Container>
         )
     }
 }

@@ -1,6 +1,13 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom'
 
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
+import Table from 'react-bootstrap/Table'
+
 class Portfolio extends React.Component {
 
     state = {
@@ -59,7 +66,7 @@ class Portfolio extends React.Component {
         }
         else if(Object.entries(this.state.stocks).length > 0) {
             return (
-                <table>
+                <Table striped bordered hover size="sm">
                     <thead>
                     <tr>
                         <th>Symbol</th>
@@ -80,7 +87,7 @@ class Portfolio extends React.Component {
                             )
                         })}
                     </tbody>
-                </table>
+                </Table>
             )
         }
         else {
@@ -166,22 +173,30 @@ class Portfolio extends React.Component {
         }
 
         return (
-            <div>
-                <h2>Hi {this.state.name}</h2>
+            <Container>
+                <Row>
+                    <Col md={4}><h2>Hi {this.state.name}</h2></Col>
+                    <Col md={{ span: 4, offset: 4 }}><p>portfolio | <Link to="/transactions">transactions</Link> | <Link to="#" onClick={this.handleLogout}>logout</Link></p></Col>
+                </Row>
                 <h3>Portfolio {this.totalValue()}</h3>
-                <p>portfolio | <Link to="/transactions">transactions</Link> | <Link to="#" onClick={this.handleLogout}>logout</Link></p>
 
                 {this.displayStocks()}
 
                 <h3>Buy</h3>
                 <h4>Balance: ${this.state.balance.toFixed(2)}</h4>
                 <p>{this.state.error}</p>
-                <form onSubmit={this.handleSubmit}>
-                    <input type="text" placeholder="Ticker" onChange={this.handleChange} name="ticker" value={this.state.ticker} />
-                    <input type="text" placeholder="Quantity" onChange={this.handleChange} name="quantity" value={this.state.quantity} />
-                    <input type="submit" />
-                </form>
-            </div>
+                <Form onSubmit={this.handleSubmit}>
+                    <Col md={4}><Form.Group>
+                        <Form.Control type="text" placeholder="Ticker" name="ticker" value={this.state.ticker} onChange={this.handleChange}/>
+                    </Form.Group></Col>
+                    <Col md={4}><Form.Group>
+                        <Form.Control type="text" placeholder="Quantity" name="quantity" value={this.state.quantity} onChange={this.handleChange}/>
+                    </Form.Group></Col>
+                    <Col><Button variant="primary" type="submit">
+                        Buy
+                    </Button></Col>
+                </Form>
+            </Container>
         )
     }
 }
