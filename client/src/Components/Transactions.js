@@ -2,6 +2,10 @@ import React from 'react';
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
+/*
+    A display component for the stock transactions page
+    Props are received from ViewContainer
+ */
 const Transactions = props => {
     return (
         <>

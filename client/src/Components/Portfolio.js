@@ -2,6 +2,11 @@ import React from 'react'
 
 import Table from 'react-bootstrap/Table'
 
+/*
+    A display component for the portfolio page
+    Props are received from the ViewContainer
+ */
+
 const Portfolio = props => {
 
     const displayStocks = () => {

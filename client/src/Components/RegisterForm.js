@@ -7,6 +7,11 @@ import Col from "react-bootstrap/Col"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 
+/*
+    Handles account registration
+    Redirects to the portfolio page on successful account creation
+ */
+
 class RegisterForm extends React.Component {
 
     state = {

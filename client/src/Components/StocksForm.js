@@ -4,6 +4,12 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Col from "react-bootstrap/Col";
 
+/*
+    Handles stock purchasing
+    Successful stock purchases will be stored and immediately displayed on
+    the portfolio and transactions pages
+ */
+
 class StocksForm extends React.Component {
     state = {
         ticker: "",

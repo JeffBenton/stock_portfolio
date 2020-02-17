@@ -1,6 +1,9 @@
 require 'json'
 
 class UsersController < ApplicationController
+
+  # Handles sign in attempts
+  # Generates and stores a new auth token
   def signin
     user = User.find_by(email: params[:email])
     if user and user.authenticate(params[:password])
@@ -11,6 +14,8 @@ class UsersController < ApplicationController
     end
   end
 
+  # Handles registration attempts
+  # Validates user field requirements
   def register
     user = User.create(name: params[:name], email: params[:email], password: params[:password])
     if !user.errors.empty?
@@ -20,6 +25,7 @@ class UsersController < ApplicationController
     end
   end
 
+  # Handles fetching a specific user
   def get
     user = authenticate(params[:id], request.headers["HTTP_AUTH_TOKEN"])
     if user

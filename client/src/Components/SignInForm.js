@@ -7,6 +7,11 @@ import Col from "react-bootstrap/Col"
 import Form from "react-bootstrap/Form"
 import Button from "react-bootstrap/Button"
 
+/*
+    Handles account sign ins
+    Redirects to portfolio page on successful authentication
+ */
+
 class SignInForm extends React.Component {
 
     state = {

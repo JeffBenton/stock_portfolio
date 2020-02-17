@@ -1,6 +1,10 @@
 require 'json'
 
 class StocksController < ApplicationController
+
+  # Endpoint for buying stocks
+  # Checks for valid inputs and for adequate balance before completing transaction
+  # returns updated balance on success
   def buy
     user = authenticate(params[:id], request.headers["HTTP_AUTH_TOKEN"])
     if user
@@ -33,6 +37,7 @@ class StocksController < ApplicationController
 
   end
 
+  # Endpoint for fetching transactions associated with a specific user
   def transactions
     user = authenticate(params[:user_id], request.headers["HTTP_AUTH_TOKEN"])
     if user
@@ -43,6 +48,7 @@ class StocksController < ApplicationController
     end
   end
 
+  # Endpoint for fetching stocks associated with a specific user
   def get
     user = authenticate(params[:id], request.headers["HTTP_AUTH_TOKEN"])
     if user
@@ -56,6 +62,8 @@ class StocksController < ApplicationController
 
   private
 
+  # Helper method for fetching stocks that combines purchases of the same stock
+  # into a single record
   def consolidateStocks(userId)
     s = {}
     Stock.where(user_id: userId).each do |stock|

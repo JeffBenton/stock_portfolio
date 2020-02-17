@@ -9,6 +9,14 @@ import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 
+/*
+    Handles all of the business logic for the application
+    Fetch requests are sent to the backend api for User and Stock information
+    which is then passed as props to child components
+    Keeps fetched data in state to reduce the amount of requerying
+    when navigating between portfolio and transaction pages
+ */
+
 class ViewContainer extends React.Component {
     state = {
         id: "",
