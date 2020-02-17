@@ -82,7 +82,8 @@ class Portfolio extends React.Component {
         fetch('/api/buy', {
             method: 'post',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "AUTH_TOKEN": window.sessionStorage.getItem("auth_token")
             },
             body: JSON.stringify({
                 "ticker": this.state.ticker,

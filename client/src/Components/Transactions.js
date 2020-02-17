@@ -9,9 +9,15 @@ class Transactions extends React.Component {
 
     componentDidMount() {
         const user_id = window.sessionStorage.getItem("id");
-        fetch(`/api/transactions/${user_id}`)
+        const auth_token = window.sessionStorage.getItem("auth_token");
+        fetch(`/api/transactions/${user_id}`, {
+            headers: {
+                "AUTH_TOKEN": auth_token
+            }
+        })
             .then(res => res.json())
             .then(responseJSON => {
+                console.log(responseJSON);
                 this.setState({
                     transactions: responseJSON
                 })
