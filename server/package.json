@@ -1,0 +1,19 @@
+{
+  "name": "stock-tracker",
+  "version": "1.0.0",
+  "description": "a tracker of stocks",
+  "main": "index.js",
+  "repository": "https://github.com/JeffBenton/stock_portfolio/tree/deployment",
+  "author": "Jeff Benton <jeff@frogrock.net>",
+  "license": "MIT",
+  "scripts": {
+    "build": "cd client && yarn install && yarn build && cd ..",
+    "deploy": "cp -a client/build/. public/",
+    "postinstall": "yarn build && yarn deploy && echo 'Client built!'"
+  },
+  "engines": {
+    "yarn": "1.21.1",
+    "npm": "6.13.4",
+    "node": "13.5.0"
+  }
+}
