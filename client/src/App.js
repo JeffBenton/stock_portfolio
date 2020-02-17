@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
 import SignInForm from "./Components/SignInForm";
 import RegisterForm from "./Components/RegisterForm";
@@ -13,21 +13,12 @@ function App() {
     <div className="App">
         <Router>
             <Switch>
-                <Route path="/signup">
-                    <RegisterForm />
-                </Route>
+                <Route exact path="/" component={SignInForm} />
+                <Route path="/signup" component={RegisterForm} />
+                <Route path="/portfolio" component={Portfolio} />
+                <Route path="/transactions" component={Transactions} />
 
-                <Route path="/portfolio">
-                    <Portfolio />
-                </Route>
-
-                <Route path="/transactions">
-                    <Transactions />
-                </Route>
-
-                <Route path="/">
-                    <SignInForm />
-                </Route>
+                <Redirect to="/" />
             </Switch>
         </Router>
     </div>
