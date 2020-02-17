@@ -6,6 +6,7 @@ import RegisterForm from "./Components/RegisterForm";
 import ViewContainer from "./Containers/ViewContainer";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css'
 
 function App() {
   return (

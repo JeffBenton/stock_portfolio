@@ -1,10 +1,11 @@
 import React from 'react'
 
 import Portfolio from "../Components/Portfolio";
-import NavBar from "../Components/NavBar";
 import Transactions from "../Components/Transactions";
 
 import Container from "react-bootstrap/Container";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 
 class ViewContainer extends React.Component {
     state = {
@@ -17,6 +18,7 @@ class ViewContainer extends React.Component {
         quantity: "",
         logout: false,
         error: "",
+        active: "portfolio"
     };
 
     componentDidMount() {
@@ -37,6 +39,7 @@ class ViewContainer extends React.Component {
                         id: responseJSON["id"]
                     });
                     this.fetchStocks(id);
+                    this.fetchTransactions(id);
                 }
                 else {
                     this.handleLogout();
@@ -52,18 +55,67 @@ class ViewContainer extends React.Component {
         })
             .then(res => res.json())
             .then(responseJSON => {
-                this.setState({
-                    stocks: responseJSON["stocks"]
-                });
+                if(responseJSON["success"]) {
+                    this.setState({
+                        stocks: responseJSON["stocks"]
+                    });
+                }
+                else {
+                    this.handleLogout();
+                }
             });
+    };
+
+    fetchTransactions = id => {
+        fetch(`/api/transactions/${id}`, {
+            headers: {
+                "AUTH_TOKEN": window.sessionStorage.getItem("auth_token")
+            }
+        })
+            .then(res => res.json())
+            .then(responseJSON => {
+                if(responseJSON["success"]) {
+                    this.setState({
+                        transactions: responseJSON["transactions"]
+                    })
+                }
+                else {
+                    this.handleLogout()
+                }
+            })
+    };
+
+    navigate = route => {
+        if(route !== this.state.active) {
+            this.setState({
+                active: route
+            })
+        }
+    };
+
+    display = () => {
+        if(this.state.active === "portfolio") {
+            return (<Portfolio stocks={this.state.stocks} balance={this.state.balance} />)
+        }
+        else if(this.state.active === "transactions") {
+            return (<Transactions transactions={this.state.transactions} />)
+        }
     };
 
     render() {
         return (
             <Container>
                 {console.log(this.state)}
-                <NavBar name={this.state.name} />
-                <Portfolio stocks={this.state.stocks} balance={this.state.balance} />
+                <Row>
+                    <Col md={4}><h2>Hi {this.state.name}</h2></Col>
+                    <Col md={{ span: 4, offset: 4 }}><p>
+                        <span onClick={() => this.navigate("portfolio")} className={this.state.active === "portfolio" ? "" : "not-active"}>portfolio</span> | <
+                        span onClick={() => this.navigate("transactions")} className={this.state.active === "transactions" ? "" : "not-active"}>transactions</span> | <
+                        span>logout</span></p></Col>
+                </Row>
+
+                {this.display()}
+
             </Container>
         )
     }
