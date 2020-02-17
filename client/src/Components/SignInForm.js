@@ -61,7 +61,7 @@ class SignInForm extends React.Component {
         return (
             <Container>
                 <Row className="justify-content-md-center"><h3>Sign In</h3></Row>
-                <Row className="justify-content-md-center"><p>{this.state.error}</p></Row>
+                <Row className="justify-content-md-center"><p style={{ color: "red" }}>{this.state.error}</p></Row>
                 <Row className="justify-content-md-center">
                     <Form onSubmit={this.handleSubmit}>
                         <Col><Form.Group>
