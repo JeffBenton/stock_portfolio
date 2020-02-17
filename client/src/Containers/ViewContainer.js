@@ -99,6 +99,7 @@ class ViewContainer extends React.Component {
             balance: newBalance
         });
         this.fetchStocks(this.state.id);
+        this.fetchTransactions(this.state.id);
     };
 
     display = () => {
