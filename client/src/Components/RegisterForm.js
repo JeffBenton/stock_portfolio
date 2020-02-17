@@ -64,7 +64,7 @@ class RegisterForm extends React.Component {
     };
 
     render() {
-        if(this.state.success) {
+        if(this.state.success || window.sessionStorage.key("auth_token")) {
             return <Redirect to='/profile' />
         }
 
