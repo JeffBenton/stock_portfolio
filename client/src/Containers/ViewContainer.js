@@ -2,7 +2,9 @@ import React from 'react'
 
 import Portfolio from "../Components/Portfolio";
 import Transactions from "../Components/Transactions";
+import StocksForm from "../Components/StocksForm";
 
+import { Redirect } from 'react-router-dom';
 import Container from "react-bootstrap/Container";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
@@ -17,7 +19,6 @@ class ViewContainer extends React.Component {
         ticker: "",
         quantity: "",
         logout: false,
-        error: "",
         active: "portfolio"
     };
 
@@ -93,25 +94,48 @@ class ViewContainer extends React.Component {
         }
     };
 
+    handlePurchase = newBalance => {
+        this.setState({
+            balance: newBalance
+        });
+        this.fetchStocks(this.state.id);
+    };
+
     display = () => {
         if(this.state.active === "portfolio") {
-            return (<Portfolio stocks={this.state.stocks} balance={this.state.balance} />)
+            return (
+                <>
+                    <Portfolio stocks={this.state.stocks} />
+                    <StocksForm id={this.state.id} balance={this.state.balance} handlePurchase={this.handlePurchase} />
+                </>
+            )
+
         }
         else if(this.state.active === "transactions") {
             return (<Transactions transactions={this.state.transactions} />)
         }
     };
 
+    handleLogout = () => {
+        window.sessionStorage.clear();
+        this.setState({
+            logout: true
+        })
+    };
+
     render() {
+        if(this.state.logout) {
+            return (<Redirect to="/" />)
+        }
+
         return (
             <Container>
-                {console.log(this.state)}
                 <Row>
                     <Col md={4}><h2>Hi {this.state.name}</h2></Col>
                     <Col md={{ span: 4, offset: 4 }}><p>
                         <span onClick={() => this.navigate("portfolio")} className={this.state.active === "portfolio" ? "" : "not-active"}>portfolio</span> | <
                         span onClick={() => this.navigate("transactions")} className={this.state.active === "transactions" ? "" : "not-active"}>transactions</span> | <
-                        span>logout</span></p></Col>
+                        span onClick={() => this.handleLogout()} className="not-active">logout</span></p></Col>
                 </Row>
 
                 {this.display()}
